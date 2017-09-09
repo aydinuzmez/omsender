@@ -9,6 +9,7 @@
 #    - Date: Sep 2017
 
 import PeyeonScript
+import re
 
 """
 fusion = eyeon.scriptapp("Fusion")
@@ -28,16 +29,19 @@ if comp_active_tool is not None:
 
 #fusion = PeyeonScript.scriptapp("Fusion")
 
-COMPPATHMAP = "Project:"
-FILEPATHMAP = "Project"
+COMP_PATHMAP = "Project:"
+PATH_PATHMAP = "Project"
 
 
 """
 @@@@@@@@@@@@@ATTENTION@@@@@@@@
 
 
-__bos saver geldigin hata veriyor.
-__baska bir node secili ikende veriyor sikicemmm
+__bos saver geldigin hata veriyor. [TAMAM]
+__baska bir node secili ikende veriyor [TAMAM]
+
+__  - "project:" Pathmap var ama
+    -  saver'da "project:" yok
 
 """
 
@@ -47,53 +51,79 @@ class Saver(object):
         self.fusion = PeyeonScript.scriptapp("Fusion")
         self.comp = self.fusion.GetCurrentComp()
         self.comp_active_tool = self.comp.ActiveTool
+        self.path = str(self.comp_active_tool.GetInput("Clip"))
 
-    def __saver_control(self):
+
+    def is_saver(self):
         if self.comp_active_tool is not None:
-            if self.comp_active_tool.ID == "Saver":
+            if self.comp_active_tool.ID == "Saver" or self.comp_active_tool.ID == "Loader":
                 return True
             else:
                 return False
         else:
             return False
 
+    def is_there_clip(self):
+        if self.comp_active_tool.GetInput("Clip"):
+            return True
+        else:
+            return False
+
     def __get_pathmap(self):
         pathmap_response = self.comp.GetCompPathMap(False, False)
-        if pathmap_response[COMPPATHMAP]:
-            #print "Pathmap_response: ",pathmap_response[COMPPATHMAP]
-            return pathmap_response[COMPPATHMAP]
+        if pathmap_response[COMP_PATHMAP]:
+            #print "Pathmap_response: ",pathmap_response[COMP_PATHMAP]
+            return pathmap_response[COMP_PATHMAP]
         else:
             return None
 
     def __path_split(self):
-        response= str(self.comp_active_tool.GetInput("Clip"))
-        return response.split(":")
+        return self.path.split(":")
 
-    def __from_project_to_path(self):
+    def __path_match(self):
         """
-        pdivide
         :return: 
         """
-        filename_split = self.__path_split()
+        nesne = re.match(PATH_PATHMAP,self.path)
+        if nesne:
+            return True
+        else:
+            return False,"__path_match False"
+
+    def __get_path(self):
+        pass
+
+    def __from_project_to_path(self):
+        path_split = self.__path_split()
         project_pathmap = self.__get_pathmap()
 
-        if filename_split[0] == FILEPATHMAP:
-            return "Path",project_pathmap+filename_split[1]
+        if path_split[0] == PATH_PATHMAP:
+            return project_pathmap+path_split[1]
         else:
             print "Return None, fusion.py>__from_project_to_path"
             return None
 
     def get_filename(self):
-        if self.__saver_control() is True:
-
+        """
+        
+        :return: 
+        """
+        if self.is_saver() is True:
+            prefix = "Path"
             if self.__get_pathmap() is None:
-                print self.comp_active_tool.GetInput("Clip")
-                return self.comp_active_tool.GetInput("Clip")
+                return prefix,self.comp_active_tool.GetInput("Clip")
             else:
-                #print self.__from_project_to_path()
-                return self.__from_project_to_path()
+                """
+                - "project:" Pathmap var ama
+                -  saver'da "project:" yok
+                :return: 
+                """
+                if self.__path_match() is True:
+                    return prefix, self.__from_project_to_path()
+                else:
+                    return prefix, self.comp_active_tool.GetInput("Clip")
         else:
-            print "This is not the Saver.","Result:",None
+            print "This isn't the Saver.","Result:", None
             return None
 
 if __name__ == '__main__':

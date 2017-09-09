@@ -16,11 +16,73 @@ import fusion
 
 IP = "http://192.168.0.3:14125/api/"
 API_KEY = "3DHS33113425CEEX0HXS7FQ3X77S3457"
-#ROOM = os.environ["COMPUTERNAME"]+"1231"
+ROOM = os.environ["COMPUTERNAME"]+"1231"
 USER = os.environ["USERNAME"]
 MESSAGECOLOR = "#F7CA18"
 #TRANSFER = "SERKANA"
-TRANSFER = "AYDINU"
+TRANSFER = "BURAKK"
+
+class Room(object):
+    def __init__(self):
+        self.__chat_json = {
+            "roomname": ROOM,
+            "roomusers": USER+"|0,"+TRANSFER+"|0",
+        }
+        self.__response =self.get()
+
+    def __get_url(self, url):
+        """
+        ip is adding
+        :param url:
+        :return:
+        """
+        added_url = IP + url
+        return added_url
+
+    def __url_req(self, url):
+        """
+        return req
+        :param url:
+        :return:
+        """
+        req = urllib2.Request(self.__get_url(url))
+        req.add_header('Accept', "application/json, text/javascript, */*")
+        req.add_header("API-KEY", API_KEY)
+        return req
+
+    def get(self):
+        """
+        Boolean: True or False
+        :return:
+        """
+        self.req = self.__url_req("chatrooms/" + ROOM)
+        response = urllib2.urlopen(self.req)
+        json_response = json.load(response)
+        return json_response
+
+    def is_there_room(self):
+        return self.__response["success"]
+
+    def create(self):
+        if self.is_there_room() is False:
+            create_req = self.__url_req("chatrooms")
+            response = urllib2.urlopen(create_req, json.dumps(self.__chat_json))
+            json_response = json.load(response)
+            if json_response["success"] is True:
+                print ROOM + "that new chat ROOM created"
+                return json_response["success"]
+            else:
+                print "json_response: {0} - {1} didn't create ".format(json_response,ROOM)
+                return False
+
+        else:
+            print ROOM+ " already has "
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return True
 
 
 class Message(object):
@@ -66,12 +128,19 @@ class Message(object):
         return True
 
 try:
+    #ROOM = "COMP-9"
+    chat1 = Room()
     message1 = Message()
     saver1 = fusion.Saver()
     path = saver1.get_filename()[1]
-    print "Saver's path: " + path
+    print "Project's Path: " + path
     if path is not None:
-        message1.write(path)
+        if chat1.is_there_room() is True:
+            message1.write(path)
+        else:
+            print ROOM + " didn't found"
+            chat1.create()  #BURASI KALKACAK OZEL MESAJ CALISTIGI ICIN
+            message1.write(path)
 
 except urllib2.HTTPError,e:
     print (e.code,e.msg)
