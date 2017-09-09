@@ -71,7 +71,7 @@ class Saver(object):
 
     def __get_pathmap(self):
         pathmap_response = self.comp.GetCompPathMap(False, False)
-        if pathmap_response[COMP_PATHMAP]:
+        if pathmap_response:
             #print "Pathmap_response: ",pathmap_response[COMP_PATHMAP]
             return pathmap_response[COMP_PATHMAP]
         else:
@@ -109,21 +109,24 @@ class Saver(object):
         :return: 
         """
         if self.is_saver() is True:
-            prefix = "Path"
-            if self.__get_pathmap() is None:
-                return prefix,self.comp_active_tool.GetInput("Clip")
-            else:
-                """
-                - "project:" Pathmap var ama
-                -  saver'da "project:" yok
-                :return: 
-                """
-                if self.__path_match() is True:
-                    return prefix, self.__from_project_to_path()
+            if self.is_there_clip():
+                if self.__get_pathmap() is None:
+                    return self.comp_active_tool.GetInput("Clip")
                 else:
-                    return prefix, self.comp_active_tool.GetInput("Clip")
+                    """
+                    - "project:" Pathmap var ama
+                    -  saver'da "project:" yok
+                    :return: 
+                    """
+                    if self.__path_match() is True:
+                        return self.__from_project_to_path()
+                    else:
+                        return self.comp_active_tool.GetInput("Clip")
+            else:
+                print "There isn't any project's path in the node"
+                return None
         else:
-            print "This isn't the Saver.","Result:", None
+            print "This is no The Saver or The Loader"
             return None
 
 if __name__ == '__main__':

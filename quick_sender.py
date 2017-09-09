@@ -17,15 +17,11 @@ def run():
     try:
         message1 = Message()
         saver1 = Saver()
-        if saver1.is_saver():
-            if saver1.is_there_clip():
-                path = saver1.get_filename()[1]
-                message1.write(path)
-                print "Project's Path:  " + path
-            else:
-                print "#Info: There isn't any project's path in the node"
-        else:
-            print "#Info: This is no The Saver or The Loader"
+        path = saver1.get_filename()
+        if path is not None:
+            print path
+            message1.write(path)
+            print "Project's Path:  " + path
 
     except urllib2.HTTPError,e:
         print (e.code,e.msg)
