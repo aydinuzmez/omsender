@@ -51,8 +51,7 @@ class Saver(object):
         self.fusion = PeyeonScript.scriptapp("Fusion")
         self.comp = self.fusion.GetCurrentComp()
         self.comp_active_tool = self.comp.ActiveTool
-        self.path = str(self.comp_active_tool.GetInput("Clip"))
-
+        self.path = ""
 
     def is_saver(self):
         if self.comp_active_tool is not None:
@@ -108,7 +107,10 @@ class Saver(object):
         
         :return: 
         """
+
+
         if self.is_saver() is True:
+            self.path = str(self.comp_active_tool.GetInput("Clip"))
             prefix = "Path"
             if self.__get_pathmap() is None:
                 return prefix,self.comp_active_tool.GetInput("Clip")
