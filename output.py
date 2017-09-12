@@ -24,7 +24,7 @@ TRANSFER = "SERKANA"
 
 class Message(object):
     def __init__(self):
-        self.data = {
+        self.data2 = {
             #"ROOM": ROOM,
             "from":USER,
             "to":TRANSFER,
@@ -32,7 +32,7 @@ class Message(object):
             "notify":1,
             "message": "",
         }
-        self.data2 = {
+        self.data = {
             #"ROOM": ROOM,
             "from":TRANSFER,
             "to":USER,
