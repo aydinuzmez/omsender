@@ -33,6 +33,7 @@ class Message(object):
         self.__to_user = {
             "from":TRANSFER,
             "to":USER,
+            "color": MESSAGECOLOR,
             "notify":1,
             "message": "",
         }
