@@ -23,38 +23,47 @@ TRANSFER = "SERKANA"
 
 
 class Message(object):
-    def __init__(self):
-        self.data2 = {
-            #"ROOM": ROOM,
+    def __init__(self,write):
+        self.__to_transfer = {
             "from":USER,
             "to":TRANSFER,
             "notify":1,
             "message": "",
         }
-        self.data = {
-            #"ROOM": ROOM,
+        self.__to_user = {
             "from":TRANSFER,
             "to":USER,
             "notify":1,
             "message": "",
         }
+            #"ROOM": ROOM,
 
         self.url_chat = IP+r"/notify"
-        self.req = urllib2.Request(self.url_chat)
+        self.write = write
 
-        self.req.add_header('Accept', "application/json, text/javascript, */*")
-        self.req.add_header("API-KEY", API_KEY)
+    def to_user(self):
+        try:
+            self.__to_user["message"] = self.write
+            req = urllib2.Request(url=self.url_chat)
+            req.add_header('Accept', "application/json, text/javascript, */*")
+            req.add_header("API-KEY", API_KEY)
+            response = urllib2.urlopen(req, data=json.dumps(self.__to_user))
+            json_response = json.load(response)
+            print "User {0} sent message, Result: ".format(USER) + str(json_response["success"])
+        except urllib2.HTTPError, e:
+            print (e.code, e.msg)
 
-    def write(self, write):
-        self.data["message"] = write
-        self.data2["message"] = write
-        response = urllib2.urlopen(self.req, json.dumps(self.data))
-        json_response= json.load(response)
-        response = urllib2.urlopen(self.req, json.dumps(self.data2))
-        json_response2= json.load(response)
-        print "Transfer {0} sent message, Result: ".format(TRANSFER) + str(json_response["success"])
-        print "User {0} sent message, Result: ".format(USER) + str(json_response2["success"])
-        return json_response["success"]
+    def to_transfer(self):
+        try:
+            self.__to_transfer["message"] = self.write
+            req = urllib2.Request(url=self.url_chat)
+            req.add_header('Accept', "application/json, text/javascript, */*")
+            req.add_header("API-KEY", API_KEY)
+            response = urllib2.urlopen(req, data=json.dumps(self.__to_transfer))
+            json_response = json.load(response)
+            print "Transfer {0} sent message, Result: ".format(TRANSFER) + str(json_response["success"])
+        except urllib2.HTTPError, e:
+            print (e.code, e.msg)
 
     def __enter__(self):
         return self

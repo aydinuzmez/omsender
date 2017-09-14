@@ -14,17 +14,13 @@ import urllib2
 
 
 def run():
-    try:
-        message1 = Message()
-        saver1 = Saver()
-        path = saver1.get_filename()
-        if path is not None:
-            print path
-            message1.write(path)
-            print "Project's Path:  " + path
-
-    except urllib2.HTTPError,e:
-        print (e.code,e.msg)
+    saver1 = Saver()
+    path = saver1.get_filename()
+    if path is not None:
+        message1 = Message(path)
+        message1.to_transfer()
+        message1.to_user()
+        print "Project's Path:  " + path
 
 
 if __name__ == '__main__':
