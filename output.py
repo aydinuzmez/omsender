@@ -19,7 +19,7 @@ API_KEY = "3DHS33113425CEEX0HXS7FQ3X77S3457"
 USER = os.environ["USERNAME"]
 MESSAGECOLOR = "#F7CA18"
 TRANSFER = "SERKANA"
-#TRANSFER = "AYDINU"
+#TRANSFER = "BURAKK"
 
 
 class Message(object):
@@ -28,7 +28,6 @@ class Message(object):
             #"ROOM": ROOM,
             "from":USER,
             "to":TRANSFER,
-            "color":MESSAGECOLOR,
             "notify":1,
             "message": "",
         }
@@ -36,7 +35,6 @@ class Message(object):
             #"ROOM": ROOM,
             "from":TRANSFER,
             "to":USER,
-            "color":MESSAGECOLOR,
             "notify":1,
             "message": "",
         }
@@ -51,9 +49,9 @@ class Message(object):
         self.data["message"] = write
         self.data2["message"] = write
         response = urllib2.urlopen(self.req, json.dumps(self.data))
-        response2 = urllib2.urlopen(self.req, json.dumps(self.data2))
         json_response= json.load(response)
-        json_response2= json.load(response2)
+        response = urllib2.urlopen(self.req, json.dumps(self.data2))
+        json_response2= json.load(response)
         print "Transfer {0} sent message, Result: ".format(TRANSFER) + str(json_response["success"])
         print "User {0} sent message, Result: ".format(USER) + str(json_response2["success"])
         return json_response["success"]
