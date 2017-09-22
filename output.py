@@ -38,18 +38,21 @@ class Message(object):
             "message": "",
         }
             #"ROOM": ROOM,
-
         self.url_chat = IP+r"/notify"
         self.write = write
+
+    def request(self):
+        req = urllib2.Request(url=self.url_chat)
+        req.add_header('Accept', "application/json, text/javascript, */*")
+        req.add_header("API-KEY", API_KEY)
+        return req
 
     def to_user(self):
         try:
             self.__to_user["message"] = self.write
-            req = urllib2.Request(url=self.url_chat)
-            req.add_header('Accept', "application/json, text/javascript, */*")
-            req.add_header("API-KEY", API_KEY)
-            response = urllib2.urlopen(req, data=json.dumps(self.__to_user))
+            response = urllib2.urlopen(self.request(), data=json.dumps(self.__to_user))
             json_response = json.load(response)
+
             print "User {0} sent message, Result: ".format(USER) + str(json_response["success"])
         except urllib2.HTTPError, e:
             print (e.code, e.msg)
@@ -57,11 +60,9 @@ class Message(object):
     def to_transfer(self):
         try:
             self.__to_transfer["message"] = self.write
-            req = urllib2.Request(url=self.url_chat)
-            req.add_header('Accept', "application/json, text/javascript, */*")
-            req.add_header("API-KEY", API_KEY)
-            response = urllib2.urlopen(req, data=json.dumps(self.__to_transfer))
+            response = urllib2.urlopen(self.request(), data=json.dumps(self.__to_transfer))
             json_response = json.load(response)
+
             print "Transfer {0} sent message, Result: ".format(TRANSFER) + str(json_response["success"])
         except urllib2.HTTPError, e:
             print (e.code, e.msg)
