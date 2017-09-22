@@ -1,25 +1,39 @@
 # -*- coding: utf-8 -*-
 # Copyright (c) 2017-2018, Aydin Uzmez
 #
-# This module is part of quickConvert and is released under the BSD 2
+# This module is part of quickSender and is released under the BSD 2
 # License: http://www.opensource.org/licenses/BSD-2-Clause
 #   File
 #    - Author: Aydin Uzmez
 #    - File : fusion
 #    - Date: Sep 2017
 
+DEBUG = 0
 
 import json
 import urllib2
 import os
+import logging
+import time
+
 
 IP = "http://192.168.0.3:14125/api/"
 API_KEY = "3DHS33113425CEEX0HXS7FQ3X77S3457"
 #ROOM = os.environ["COMPUTERNAME"]+"1231"
 USER = os.environ["USERNAME"]
 MESSAGECOLOR = "#F7CA18"
-TRANSFER = "SERKANA"
-#TRANSFER = "BURAKK"
+
+if DEBUG == 0:
+    TRANSFER = "SERKANA"
+else:
+    TRANSFER = "AYDINU"
+
+logging.basicConfig(
+    filename="log/"+time.strftime("%d_%m_%Y")+".log",
+    level=logging.DEBUG,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    datefmt="%I:%M:%S %p"
+                    )
 
 
 class Message(object):
@@ -64,8 +78,13 @@ class Message(object):
             json_response = json.load(response)
 
             print "Transfer {0} sent message, Result: ".format(TRANSFER) + str(json_response["success"])
+            logging.info("log: %s ", {"user":USER,
+                                       "status":str(json_response["success"]),
+                                        "path":self.write}
+                         )
         except urllib2.HTTPError, e:
             print (e.code, e.msg)
+            logging.warning("log: %s", {"code": e.code,"msg": e.msg})
 
     def __enter__(self):
         return self
