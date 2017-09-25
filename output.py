@@ -28,8 +28,12 @@ if DEBUG == 0:
 else:
     TRANSFER = "AYDINU"
 
+current_folder = os.path.dirname(__file__)
+log_path = os.path.join(current_folder, "log", time.strftime("%d_%m_%Y")+".log")
+
+
 logging.basicConfig(
-    filename="log/"+time.strftime("%d_%m_%Y")+".log",
+    filename=log_path,
     level=logging.DEBUG,
     format='%(asctime)s - %(levelname)s - %(message)s',
     datefmt="%I:%M:%S %p"
