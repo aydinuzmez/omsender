@@ -10,6 +10,7 @@
 
 import PeyeonScript
 import re
+import os
 
 """
 fusion = eyeon.scriptapp("Fusion")
@@ -103,6 +104,20 @@ class Saver(object):
             print "Return None, fusion.py>__from_project_to_path"
             return None
 
+    def __isfile(self,filepath):
+        return os.path.isfile(filepath)
+
+    def __dir_name(self,path= None):
+        if path is None:
+            filename = self.comp_active_tool.GetInput("Clip")
+        else:
+            filename = path
+        if self.__isfile(filename) is True:
+            return os.path.dirname(filename)
+        else:
+            print "Path taken isn't file"
+            return None
+
     def get_filename(self):
         """
         
@@ -111,17 +126,18 @@ class Saver(object):
         if self.is_saver() is True:
             if self.is_there_clip():
                 if self.__get_pathmap() is None:
-                    return self.comp_active_tool.GetInput("Clip")
+                    return self.__dir_name()
                 else:
                     """
                     - "project:" Pathmap var ama
                     -  saver'da "project:" yok
-                    :return: 
+                    :return:
                     """
                     if self.__path_match() is True:
-                        return self.__from_project_to_path()
+                        path = self.__from_project_to_path()
+                        return self.__dir_name(path)
                     else:
-                        return self.comp_active_tool.GetInput("Clip")
+                        return self.__dir_name()
             else:
                 print "There isn't any project's path in the node"
                 return None
