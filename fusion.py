@@ -34,19 +34,6 @@ COMP_PATHMAP = "Project:"
 PATH_PATHMAP = "Project"
 
 
-"""
-@@@@@@@@@@@@@ATTENTION@@@@@@@@
-
-
-__bos saver geldigin hata veriyor. [TAMAM]
-__baska bir node secili ikende veriyor [TAMAM]
-
-__  - "project:" Pathmap var ama
-    -  saver'da "project:" yok
-
-"""
-
-
 class Saver(object):
     def __init__(self):
         self.fusion = PeyeonScript.scriptapp("Fusion")
@@ -99,24 +86,27 @@ class Saver(object):
         project_pathmap = self.__get_pathmap()
 
         if path_split[0] == PATH_PATHMAP:
-            return project_pathmap+path_split[1]
+            return os.path.join(project_pathmap,path_split[1])
         else:
             print "Return None, fusion.py>__from_project_to_path"
             return None
 
-    def __isfile(self,filepath):
+    def __isfile(self, filepath):
         return os.path.isfile(filepath)
 
-    def __dir_name(self,path= None):
+    def __dir_name(self, path=None):
         if path is None:
             filename = self.comp_active_tool.GetInput("Clip")
         else:
             filename = path
+            print filename
+            print self.__isfile(filename)
         if self.__isfile(filename) is True:
             return os.path.dirname(filename)
         else:
             print "Path taken isn't file"
             return None
+
 
     def get_filename(self):
         """

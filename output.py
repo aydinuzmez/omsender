@@ -65,6 +65,7 @@ class Message(object):
         req.add_header("API-KEY", API_KEY)
         return req
 
+
     def to_user(self):
         try:
             self.__to_user["message"] = self.write
@@ -86,9 +87,9 @@ class Message(object):
                                        "status":str(json_response["success"]),
                                         "path":self.write}
                          )
-        except urllib2.HTTPError, e:
-            print (e.code, e.msg)
-            logging.warning("log: %s", {"code": e.code,"msg": e.msg})
+        except (urllib2.HTTPError, urllib2.URLError), e:
+            print e
+            logging.warning("log: %s", {"user": USER,"msg": e})
 
     def __enter__(self):
         return self

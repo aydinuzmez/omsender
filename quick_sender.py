@@ -21,6 +21,5 @@ def run():
         message1.to_user()
         print "Project's Path:  " + path
 
-
 if __name__ == '__main__':
     run()
