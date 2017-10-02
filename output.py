@@ -8,7 +8,7 @@
 #    - File : fusion
 #    - Date: Sep 2017
 
-DEBUG = 1
+DEBUG = 0
 
 import json
 import urllib2
