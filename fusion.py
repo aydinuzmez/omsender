@@ -84,9 +84,15 @@ class Saver(object):
     def __from_project_to_path(self):
         path_split = self.__path_split()
         project_pathmap = self.__get_pathmap()
-
         if path_split[0] == PATH_PATHMAP:
-            return os.path.join(project_pathmap,path_split[1])
+            #path_split[1].encode("string-escape")
+            match = re.match(os.sep.encode("string-escape"), path_split[1])
+            if match:
+                path_split[1] = path_split[1].lstrip("\\")
+                #print os.path.join(project_pathmap, path_split[1])
+                return os.path.join(project_pathmap, path_split[1])
+            else:
+                return os.path.join(project_pathmap, path_split[1])
         else:
             print "Return None, fusion.py>__from_project_to_path"
             return None
@@ -106,7 +112,6 @@ class Saver(object):
         else:
             print "Path taken isn't file"
             return None
-
 
     def get_filename(self):
         """
