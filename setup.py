@@ -1,8 +1,8 @@
 from distutils.core import setup
 
 setup(
-    name='output_sender',
-    packages= ['output_sender'],
+    name='omsender',
+    packages= ['omsender'],
     version='0.01',
     description='Your path send other person with Output Messenger on Blackmagic Fusion.',
     author='Aydin Uzmez',
