@@ -11,7 +11,6 @@
 from output import Message
 from fusion import Saver
 
-
 def run():
     saver1 = Saver()
     path = saver1.get_filename()

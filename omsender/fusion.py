@@ -11,28 +11,9 @@
 import PeyeonScript
 import re
 import os
+import omsender.config
 
-"""
-fusion = eyeon.scriptapp("Fusion")
-comp = fusion.GetCurrentComp()
-comp_active_tool = comp.ActiveTool
-
-if comp_active_tool is not None:
-    if comp_active_tool.ID == "Saver":
-        print comp_active_tool.ID
-        if comp_active_tool.GetInput("Clip"):
-            print comp_active_tool.GetInput("Clip")
-        else:
-            print None
-    else:
-        print None
-"""
-
-#fusion = PeyeonScript.scriptapp("Fusion")
-
-COMP_PATHMAP = "Project:"
-PATH_PATHMAP = "Project"
-
+config.fusion()
 
 class Saver(object):
     def __init__(self):

@@ -8,9 +8,23 @@
 #    - File : config
 #    - Date: Sep 2017
 
-
+import os
 
 """
 transfer e filepath mi gönderilsin. dirpath mi gonderilsin.
 api-key buraya gelecek
 """
+
+
+def setup():
+    DEBUG = 1
+    TRANSFER = "AYDINU"
+    IP = "http://192.168.0.3:14125/api/"
+    API_KEY = "3DHS33113425CEEX0HXS7FQ3X77S3457"
+    USER = os.environ["USERNAME"]
+    MESSAGECOLOR = "#F7CA18"
+
+def fusion():
+    COMP_PATHMAP = "Project:"
+    PATH_PATHMAP = "Project"
+

@@ -8,37 +8,17 @@
 #    - File : fusion
 #    - Date: Sep 2017
 
-DEBUG = 0
-
 import json
+from config import config
 import urllib2
 import os
-import logging
-import time
 
-
-IP = "http://192.168.0.3:14125/api/"
-API_KEY = "3DHS33113425CEEX0HXS7FQ3X77S3457"
-#ROOM = os.environ["COMPUTERNAME"]+"1231"
-USER = os.environ["USERNAME"]
-MESSAGECOLOR = "#F7CA18"
+config.setup()
 
 if DEBUG == 0:
     TRANSFER = "SERKANA"
 else:
     TRANSFER = "AYDINU"
-
-current_folder = os.path.dirname(__file__)
-log_path = os.path.join(current_folder, "log", time.strftime("%d_%m_%Y")+".log")
-
-
-logging.basicConfig(
-    filename=log_path,
-    level=logging.DEBUG,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    datefmt="%I:%M:%S %p"
-                    )
-
 
 class Message(object):
     def __init__(self,write):
@@ -65,7 +45,6 @@ class Message(object):
         req.add_header("API-KEY", API_KEY)
         return req
 
-
     def to_user(self):
         try:
             self.__to_user["message"] = self.write
@@ -87,6 +66,7 @@ class Message(object):
                                        "status":str(json_response["success"]),
                                         "path":self.write}
                          )
+
         except (urllib2.HTTPError, urllib2.URLError), e:
             print e
             logging.warning("log: %s", {"user": USER,"msg": e})
