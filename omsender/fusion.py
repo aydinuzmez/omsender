@@ -11,9 +11,7 @@
 import PeyeonScript
 import re
 import os
-import omsender.config
-
-config.fusion()
+import config
 
 class Saver(object):
     def __init__(self):
@@ -42,7 +40,7 @@ class Saver(object):
         pathmap_response = self.comp.GetCompPathMap(False, False)
         if pathmap_response:
             #print "Pathmap_response: ",pathmap_response[COMP_PATHMAP]
-            return pathmap_response[COMP_PATHMAP]
+            return pathmap_response[config.COMP_PATHMAP]
         else:
             return None
 
@@ -53,7 +51,7 @@ class Saver(object):
         """
         :return: 
         """
-        nesne = re.match(PATH_PATHMAP,self.path)
+        nesne = re.match(config.PATH_PATHMAP,self.path)
         if nesne:
             return True
         else:
@@ -65,12 +63,11 @@ class Saver(object):
     def __from_project_to_path(self):
         path_split = self.__path_split()
         project_pathmap = self.__get_pathmap()
-        if path_split[0] == PATH_PATHMAP:
+        if path_split[0] == config.PATH_PATHMAP:
             #path_split[1].encode("string-escape")
             match = re.match(os.sep.encode("string-escape"), path_split[1])
             if match:
                 path_split[1] = path_split[1].lstrip("\\")
-                #print os.path.join(project_pathmap, path_split[1])
                 return os.path.join(project_pathmap, path_split[1])
             else:
                 return os.path.join(project_pathmap, path_split[1])
@@ -95,10 +92,6 @@ class Saver(object):
             return None
 
     def get_filename(self):
-        """
-        
-        :return: 
-        """
         if self.is_saver() is True:
             if self.is_there_clip():
                 if self.__get_pathmap() is None:

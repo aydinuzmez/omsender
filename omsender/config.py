@@ -12,19 +12,13 @@ import os
 
 """
 transfer e filepath mi gönderilsin. dirpath mi gonderilsin.
-api-key buraya gelecek
 """
-
-
-def setup():
-    DEBUG = 1
-    TRANSFER = "AYDINU"
-    IP = "http://192.168.0.3:14125/api/"
-    API_KEY = "3DHS33113425CEEX0HXS7FQ3X77S3457"
-    USER = os.environ["USERNAME"]
-    MESSAGECOLOR = "#F7CA18"
-
-def fusion():
-    COMP_PATHMAP = "Project:"
-    PATH_PATHMAP = "Project"
+DEBUG = 0          # default 0 / if you changed 1
+USER = "admin"     # this is you
+TRANSFER = "admin" # other person
+IP = "http://127.0.0.1:14125/api/"  # your output messenger server ip
+API_KEY = "XE114YIMR7W4C40B40718FWE7J65MWOI"  #API that make api
+MESSAGECOLOR = "#F7CA18"  # color of message sent
+COMP_PATHMAP = "Project:" # pathmap of fusion
+PATH_PATHMAP = "Project"  # pathmap of fusion
 

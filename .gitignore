@@ -8,6 +8,7 @@ __pycache__/
 
 #visual studio
 *.vs
+*.vscode
 
 # Distribution / packaging
 .Python

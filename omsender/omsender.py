@@ -8,7 +8,7 @@
 #    - File : quick-sender
 #    - Date: Sep 2017
 
-from output import Message
+from lib import Message
 from fusion import Saver
 
 def run():
@@ -18,7 +18,7 @@ def run():
         message1 = Message(path)
         message1.to_transfer()
         message1.to_user()
-        print "Project's Path:  " + path
-
+        print("Project's Path:  " + path)
+        
 if __name__ == '__main__':
     run()
