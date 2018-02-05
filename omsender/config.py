@@ -14,7 +14,7 @@ import os
 transfer e filepath mi gönderilsin. dirpath mi gonderilsin.
 """
 DEBUG = 0          # default 0 / if you changed 1
-USER = "admin"     # this is you
+USER = "admin"     # this is your
 TRANSFER = "admin" # other person
 IP = "http://127.0.0.1:14125/api/"  # your output messenger server ip
 API_KEY = "XE114YIMR7W4C40B40718FWE7J65MWOI"  #API that make api
